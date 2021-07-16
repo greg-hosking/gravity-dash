@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     public float objectSpawnX, objectDestroyX;
 
     // Object movement variables
-    public float objectSpeedX, objectSpeedY;
+    public float horizontalObjectSpeed, verticalObjectSpeed;
 
     void Start()
     {
