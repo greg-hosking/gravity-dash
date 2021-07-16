@@ -7,16 +7,16 @@ public class GameManager : MonoBehaviour
 {
     // Score variables
     public TextMeshPro scoreText;
-    private float[] scoreIncrementPerSecIntervals = { 10.0f, 15.0f, 20.0f };
-    [SerializeField] private float scoreIncrementPerBit;
+    float[] scoreIncrementPerSecIntervals = { 10.0f, 15.0f, 20.0f };
+    public float scoreIncrementPerBit;
     [HideInInspector] public float score;
     [HideInInspector] public int bitsCollected;
 
     // Object spawn time variables
-    private int currentTimeInterval;
+    int currentTimeInterval;
     public float timeBetweenObjectSpawns;
-    private float[,] timeIntervals = { { 3.5f, 2.25f }, { 2.25f, 1.5f }, { 1.5f, 1.0f } };
-    private float[] timeIntervalDecrements = { 0.1f, 0.025f, 0.0125f };
+    float[,] timeIntervals = { { 3.5f, 2.25f }, { 2.25f, 1.5f }, { 1.5f, 1.0f } };
+    float[] timeIntervalDecrements = { 0.1f, 0.025f, 0.0125f };
 
     // Object spawn and destroy position variables
     public float objectSpawnX, objectDestroyX;

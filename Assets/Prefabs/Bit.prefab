@@ -108,6 +108,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d80fba1eda0ad2e4c86390eed5c4bec9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minSpawnY: 2
-  maxSpawnY: 8
+  minSpawnY: 1
+  maxSpawnY: 9
   rotationSpeed: {x: 2.5, y: 2.5, z: 2.5}

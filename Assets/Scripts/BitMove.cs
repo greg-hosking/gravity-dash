@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class BitMove : MonoBehaviour
 {
-    private GameManager gameManager;
+    GameManager gameManager;
 
     // Spawn variables
     public float minSpawnY, maxSpawnY;
 
     // Movement variables
-    [SerializeField] private Vector3 rotationSpeed;
+    public Vector3 rotationSpeed;
 
     void Start()
     {
@@ -31,5 +31,10 @@ public class BitMove : MonoBehaviour
     {
         // Rotate the bit
         transform.Rotate(rotationSpeed);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        Destroy(this.gameObject);
     }
 }
