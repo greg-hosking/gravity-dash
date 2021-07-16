@@ -43,7 +43,13 @@ public class ObstacleMove : MonoBehaviour
             verticalDirection *= -1;
 
         // Once the obstacle travels out of bounds, it is destroyed
-        if (transform.position.x < gameManager.objectDestroyX) 
-            Destroy(this.gameObject);
+        if (transform.position.x < gameManager.objectDestroyX)
+        {
+            // If the obstacle is a complex obstacle, the parent must also be destroyed
+            if (transform.parent != null)
+                Destroy(transform.parent.gameObject);
+            else
+                Destroy(this.gameObject);
+        }
     }
 }

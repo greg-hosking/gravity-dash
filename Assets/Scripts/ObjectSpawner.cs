@@ -11,7 +11,6 @@ public class ObjectSpawner : MonoBehaviour
     public GameObject[] simpleObstaclePrefabs;
     public GameObject[] complexObstaclePrefabs;
 
-    // Start is called before the first frame update
     void Start()
     {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
@@ -20,10 +19,15 @@ public class ObjectSpawner : MonoBehaviour
         StartCoroutine(SpawnObjects());        
     }
 
-    // Update is called once per frame
-    void Update()
+    void SpawnBit()
     {
-        
+        // Randomly determine where to spawn the bit
+        BitMove bitMove = bitPrefab.GetComponent<BitMove>();
+        float spawnY = Random.Range(bitMove.minSpawnY, bitMove.maxSpawnY);
+        Vector3 spawnPos = new Vector3(gameManager.objectSpawnX, spawnY, 0.0f);
+
+        // Spawn the bit
+        Instantiate(bitPrefab, spawnPos, Quaternion.identity);
     }
 
     void SpawnSimpleObstacle()
@@ -49,13 +53,36 @@ public class ObjectSpawner : MonoBehaviour
         }
     }
 
+    void SpawnComplexObstacle()
+    {
+        // Pick a random complex obstacle to spawn
+        int randomIndex = Random.Range(0, complexObstaclePrefabs.Length);
+        GameObject obstaclePrefab = complexObstaclePrefabs[randomIndex];
+
+        // Spawn the obstacle
+        Vector3 spawnPos = new Vector3(gameManager.objectSpawnX, 0.0f, 0.0f);
+        Instantiate(obstaclePrefab, spawnPos, Quaternion.identity);
+    }
+
+    void SpawnObstacle()
+    {
+        // Randomly determine whether to spawn a simple or complex obstacle
+        bool doSpawnSimpleObstacle = Random.Range(0, 3) != 0;
+
+        // Spawn the proper obstacle
+        if (doSpawnSimpleObstacle)
+            SpawnSimpleObstacle();
+        else
+            SpawnComplexObstacle();
+    }
+
     IEnumerator SpawnObjects()
     {
         while (true)
         {
-            // SpawnCollectible();
+            SpawnBit();
             yield return new WaitForSeconds(gameManager.timeBetweenObjectSpawns / 2.0f);
-            SpawnSimpleObstacle();
+            SpawnObstacle();
             yield return new WaitForSeconds(gameManager.timeBetweenObjectSpawns / 2.0f);
         }
     }
