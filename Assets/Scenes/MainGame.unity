@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreText: {fileID: 1312536961}
-  scoreIncrementPerBit: 25
+  scoreIncrementPerBit: 50
   score: 0
   bitsCollected: 0
   timeBetweenObjectSpawns: 0
@@ -406,6 +406,11 @@ MonoBehaviour:
   gravityReverseSounds:
   - {fileID: 8300000, guid: 4bfb4d121cbe8cb40b78811bc17a944f, type: 3}
   - {fileID: 8300000, guid: 53db30f819210e8438c17b76d470b92b, type: 3}
+  bitCollectSounds:
+  - {fileID: 8300000, guid: 34e98e20451762b428df27dd54b3a774, type: 3}
+  - {fileID: 8300000, guid: e6f2a8544b2810647881d0dd2a3afa8e, type: 3}
+  - {fileID: 8300000, guid: 629b8fa6c9d209e43bd009f7e80a8fdd, type: 3}
+  - {fileID: 8300000, guid: aba80ed10960ad44a98ea6793502af6c, type: 3}
   platformCollisionSounds:
   - {fileID: 8300000, guid: adfd7b274166ee14daf5459912e8dedf, type: 3}
   - {fileID: 8300000, guid: f782c1993b68e984f87fade6975e00c7, type: 3}

@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     // Sound variables
     public AudioSource audioSource;
     public AudioClip[] gravityReverseSounds;
+    public AudioClip[] bitCollectSounds;
     public AudioClip[] platformCollisionSounds;
     public AudioClip[] obstacleCollisionSounds;
 
@@ -63,7 +64,10 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        
+        // If the player "collides" with a bit (collects),
+        // play a random bit collect sound and increment bitsCollected
+        PlayRandomSound(bitCollectSounds);
+        gameManager.bitsCollected++;
     }
 
     void OnPlatformCollide()
