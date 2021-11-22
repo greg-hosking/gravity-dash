@@ -6,12 +6,16 @@ public class PlayerController : MonoBehaviour
 {
     GameManager gameManager;
 
+    // Particle system variables
+    public ParticleSystem explosionPrefab;
+    public ParticleSystem bitCollectPrefab;
+
     // Camera shake variables
     public CameraShake cameraShake;
     public float platformCollisionShakeDuration;
     public float platformCollisionShakeAmount;
     public float obstacleCollisionShakeDuration;
-    public float obstacleCollisionShakeAmount;    
+    public float obstacleCollisionShakeAmount;
 
     // Sound variables
     public AudioSource audioSource;
@@ -39,17 +43,42 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
-            ReverseGravity();
+        if (gameManager.state != 2)
+        {
+            Renderer rend = GetComponent<Renderer>();
+            rend.enabled = true;
+            Collider collider = GetComponent<Collider>();
+            collider.enabled = true;
+        }
+        if (gameManager.state == 1)
+        {
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+                ReverseGravity();
+        }
+        else
+        {
+            isGravityNormal = true;
+            rb.useGravity = false;
+            GetComponent<MeshRenderer>().material = normalGravityMaterial;
+            transform.position = new Vector3(-8.5f, 5.0f, 0.0f);
+            // transform.rotation = Quaternion.identity;
+        }
     }
 
     void FixedUpdate()
     {
-        // Apply the proper gravitational force
-        if (isGravityNormal)
-            rb.AddForce(Physics.gravity);
+        if (gameManager.state == 1)
+        {
+            // Apply the proper gravitational force
+            if (isGravityNormal)
+                rb.AddForce(Physics.gravity);
+            else
+                rb.AddForce(Physics.gravity * -2.0f);
+        }
         else
-            rb.AddForce(Physics.gravity * -2.0f);
+        {
+            transform.Rotate(new Vector3(0.0f, 0.0f, -4.5f));
+        }
     }
 
     void OnCollisionEnter(Collision other)
@@ -68,6 +97,10 @@ public class PlayerController : MonoBehaviour
         // play a random bit collect sound and increment bitsCollected
         PlayRandomSound(bitCollectSounds);
         gameManager.bitsCollected++;
+
+        // Also play particle effect
+        ParticleSystem bitCollect = Instantiate(bitCollectPrefab, other.transform.position, Quaternion.identity);
+        Destroy(bitCollect.gameObject, bitCollectPrefab.main.duration);
     }
 
     void OnPlatformCollide()
@@ -84,10 +117,30 @@ public class PlayerController : MonoBehaviour
     {
         // Greatly shake the camera upon colliding with an obstacle
         // in order to greatly emphasize the impact
-        cameraShake.ShakeCamera(obstacleCollisionShakeDuration, obstacleCollisionShakeAmount); 
+        cameraShake.ShakeCamera(obstacleCollisionShakeDuration, obstacleCollisionShakeAmount);
 
-        // Play a random obstacle collision sound
+        // Play a random obstacle collision sound and explosion effect
         PlayRandomSound(obstacleCollisionSounds);
+
+        var main = explosionPrefab.main;
+        if (isGravityNormal)
+        {
+            main.startColor = new Color(0, 0, 255);
+        }
+        else
+        {
+            main.startColor = new Color(0, 191, 0);
+        }
+
+        ParticleSystem explosion = Instantiate(explosionPrefab, gameObject.transform.position, Quaternion.identity);
+        Destroy(explosion.gameObject, main.duration);
+
+        Renderer rend = GetComponent<Renderer>();
+        rend.enabled = false;
+        Collider collider = GetComponent<Collider>();
+        collider.enabled = false;
+
+        gameManager.EndGame();
     }
 
     void ReverseGravity()
@@ -107,7 +160,7 @@ public class PlayerController : MonoBehaviour
             GetComponent<MeshRenderer>().material = normalGravityMaterial;
         }
         isGravityNormal = !isGravityNormal;
-        
+
         // Torque the player slightly and play a random gravity reverse sound
         rb.AddTorque(Vector3.back, ForceMode.Impulse);
         PlayRandomSound(gravityReverseSounds);

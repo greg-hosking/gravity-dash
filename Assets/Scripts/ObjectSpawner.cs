@@ -16,7 +16,7 @@ public class ObjectSpawner : MonoBehaviour
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
 
         // Spawn the objects
-        StartCoroutine(SpawnObjects());        
+        StartCoroutine(SpawnObjects());
     }
 
     void SpawnBit()
@@ -80,11 +80,17 @@ public class ObjectSpawner : MonoBehaviour
     {
         while (true)
         {
-            SpawnBit();
-            yield return new WaitForSeconds(gameManager.timeBetweenObjectSpawns / 2.0f);
-            SpawnObstacle();
-            yield return new WaitForSeconds(gameManager.timeBetweenObjectSpawns / 2.0f);
+            if (gameManager.state == 1)
+            {
+                SpawnBit();
+                yield return new WaitForSeconds(gameManager.timeBetweenObjectSpawns / 2.0f);
+                SpawnObstacle();
+                yield return new WaitForSeconds(gameManager.timeBetweenObjectSpawns / 2.0f);
+            }
+            else
+            {
+                yield return new WaitForSeconds(0.01f);
+            }
         }
     }
-
 }

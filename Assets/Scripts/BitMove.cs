@@ -14,17 +14,24 @@ public class BitMove : MonoBehaviour
 
     void Start()
     {
-        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();        
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
     }
 
     void Update()
     {
-        // Update the horizontal position of the bit
-        transform.position += Vector3.left * gameManager.horizontalObjectSpeed * Time.deltaTime;        
-
-        // Once the bit travels out of bounds, it is destroyed
-        if (transform.position.x < gameManager.objectDestroyX)
+        if (gameManager.state == 0)
+        {
             Destroy(this.gameObject);
+        }
+        else if (gameManager.state == 1)
+        {
+            // Update the horizontal position of the bit
+            transform.position += Vector3.left * gameManager.horizontalObjectSpeed * Time.deltaTime;
+
+            // Once the bit travels out of bounds, it is destroyed
+            if (transform.position.x < gameManager.objectDestroyX)
+                Destroy(this.gameObject);
+        }
     }
 
     void FixedUpdate()
